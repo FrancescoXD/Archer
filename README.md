@@ -28,7 +28,7 @@ $ ./installer.sh
 - Now you have to partition the disk, you will find a screen like this:
 ![3_2](.images/efi/3_2.png?raw=true "1")
 
-- First you have to create 2 partition (the **EFI** partition exists if you installed Windows), one for **swap** and one for the **system**. LIke this:
+- First you have to create 2 partitions (the **EFI** partition exists if you installed Windows), one for **swap** and one for the **system**. LIke this:
 ![3](.images/efi/3.png?raw=true "1")
 
 - Now set the right type.
