@@ -43,5 +43,5 @@ $ ./installer.sh
 - Now you have to set your localtime: (take attention at the capital letter!)
 ![7](.images/efi/7.png?raw=true "1")
 
-- Now on the screen the file ```/etc/locale.gen``` will open in ```nano```. Here you will have to find your language locale.
+- Now on the screen the file ```/etc/locale.gen``` will open in ```nano```. Here you will have to find your language locale. Then press CTRL + X to get out and follow the other instructions.
 ![8](.images/efi/8.png?raw=true "1")
