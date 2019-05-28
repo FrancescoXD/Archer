@@ -11,8 +11,8 @@ printf "
 "
 echo ""
 echo "Welcome to the automatic ArchLinux installer. See my github repo for more info: https://github.com/FrancescoXD/Archer"
-sleep 5
-clear
+echo ""
+echo ""
 fdisk -l
 echo ""
 echo "First of all, what is your partition table? (gpt or mbr)"
@@ -67,17 +67,21 @@ if [ $partitionTable == mbr ]; then
 	nano /etc/locale.gen
 	echo "Now, write your language:"
 	read localeGenLang
+	sed -i -e "s/#$localeGenLang/$localGenLang/g" /etc/locale.gen
+	locale-gen
+	# Locale conf
+	echo "LANG=$localeGenLang" > /etc/locale.conf
 	# Keymap -> vconsole.conf
 	echo "Insert the keymap (exmaple: us)"
 	read keymap
+	echo "KEYMAP=$keymap" > /etc/vconsole.conf
 	# Hostname
 	clear
 	echo "Now, insert the hostname of the machine (recommended -> archlinux)"
 	read hostname
+	echo "$hostname" > /etc/hostname
 	# Chroot
-	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && sed -i -e "s/#$localeGenLang/$localGenLang/g" /etc/locale.gen && echo "LANG=$localeGenLang" > /etc/locale.conf && echo "KEYMAP=$keymap" > /etc/vconsole.conf && echo "$hostname" > /etc/hostname && pacman -S networkmanager grub && systemctl enable NetworkManager && grub-install /dev/$disk && grub-mkconfig -o /boot/grub/grub.cfg'
-	# Locale-gen
-	locale-gen
+	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub && systemctl enable NetworkManager && grub-install /dev/$disk && grub-mkconfig -o /boot/grub/grub.cfg'
 	# Umount
 	umount -R /mnt
 	# Root password
@@ -110,7 +114,6 @@ elif [ $partitionTable == gpt ]; then
 	read swapNum
 	mkswap /dev/$disk$swapNum
 	swapon /dev/$disk$swapNum
-	clear
 	echo "Insert the EFI partition: (like 1 / 2 / 3 - only number!)"
 	read efiPart
 	# Mount the system
@@ -137,17 +140,21 @@ elif [ $partitionTable == gpt ]; then
 	nano /etc/locale.gen
 	echo "Now, write your language:"
 	read localeGenLang
+	sed -i -e "s/#$localeGenLang/$localGenLang/g" /etc/locale.gen 
+	locale-gen
 	# Keymap -> vconsole.conf
 	echo "Insert the keymap (exmaple: us)"
 	read keymap
+	echo "KEYMAP=$keymap" > /etc/vconsole.conf
+	# Locale conf
+	echo "LANG=$localeGenLang" > /etc/locale.conf
 	# Hostname
 	clear
 	echo "Now, insert the hostname of the machine (recommended -> archlinux)"
 	read hostname
+	echo "$hostname" > /etc/hostname
 	# Chroot
-	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && sed -i -e "s/#$localeGenLang/$localGenLang/g" /etc/locale.gen && echo "LANG=$localeGenLang" > /etc/locale.conf && echo "KEYMAP=$keymap" > /etc/vconsole.conf && echo "$hostname" > /etc/hostname && pacman -S networkmanager grub efibootmgr && systemctl enable NetworkManager && grub-install --target=x86_64-efi --efi-directory=/boot/efi && grub-mkconfig -o /boot/grub/grub.cfg'
-	# Locale-gen
-	locale-gen
+	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub efibootmgr && systemctl enable NetworkManager && grub-install --target=x86_64-efi --efi-directory=/boot/efi && grub-mkconfig -o /boot/grub/grub.cfg'
 	# Umount
 	umount -R /mnt/boot/efi
 	umount -R /mnt
