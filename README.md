@@ -1,4 +1,4 @@
-# Archer
+# Archer - WIP
 A complete ArchLinux installer. Making installation easier than eating a pie.
 
 > [EFI Guide](#efi-guide)
