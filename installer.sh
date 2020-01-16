@@ -48,7 +48,7 @@ if [ $partitionTable == mbr ]; then
 	# Mount the system
 	mount /dev/$disk$filesystemPart /mnt
 	# Downloading base and base-devel package
-	pacstrap /mnt base base-devel
+	pacstrap /mnt base base-devel linux linux-firmware
 	# Configure the system
 	genfstab -U /mnt > /mnt/etc/fstab
 	# Localization
@@ -81,7 +81,8 @@ if [ $partitionTable == mbr ]; then
 	read hostname
 	echo "$hostname" > /etc/hostname
 	# Chroot
-	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub && systemctl enable NetworkManager && grub-install /dev/$disk && grub-mkconfig -o /boot/grub/grub.cfg'
+	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub && systemctl enable NetworkManager'
+	arch-chroot /mnt bash -c 'grub-install /dev/$disk && grub-mkconfig -o /boot/grub/grub.cfg'
 	# Umount
 	umount -R /mnt
 	# Root password
@@ -121,7 +122,7 @@ elif [ $partitionTable == gpt ]; then
 	mkdir /mnt/boot/efi
 	mount /dev/$disk$efiPart /mnt/boot/efi
 	# Downloading base and base-devel package
-	pacstrap /mnt base base-devel
+	pacstrap /mnt base base-devel linux linux-firmware
 	# Configure the system
 	genfstab -U /mnt > /mnt/etc/fstab
 	# Localization
@@ -154,7 +155,8 @@ elif [ $partitionTable == gpt ]; then
 	read hostname
 	echo "$hostname" > /etc/hostname
 	# Chroot
-	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub efibootmgr && systemctl enable NetworkManager && grub-install --target=x86_64-efi --efi-directory=/boot/efi && grub-mkconfig -o /boot/grub/grub.cfg'
+	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub efibootmgr && systemctl enable NetworkManager'
+	arch-chroot /mnt bash -c 'grub-install --target=x86_64-efi --efi-directory=/boot/efi && grub-mkconfig -o /boot/grub/grub.cfg'
 	# Umount
 	umount -R /mnt/boot/efi
 	umount -R /mnt
