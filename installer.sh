@@ -21,23 +21,25 @@ timedatectl set-ntp true
 # Partition the disks
 echo "Now, we need to partition the disks."
 fdisk -l
-echo "Insert the disk:"
+echo ""
+echo "Insert the disk (like sda/sdc/sdb):"
 read disk
 clear
 echo "Partition is not automatic, so you need to do it manually."
+echo "IMPORTANT - select dos label type"
 echo "cfdisk is starting..."
 sleep 5
 cfdisk /dev/$disk
 clear
 fdisk -l
-echo "Insert root partition: "
+echo "Insert the number of root partition: "
 read root
 mkfs.ext4 /dev/$disk$root
 echo "Insert swap partition (enter if you don't have one):"
 read swap
 mkswap /dev/$disk$swap
 swapon /dev/$disk$swap
-mount /dev/$disk$root
+mount /dev/$disk$root /mnt
 clear
 # Pacstrap
 echo "Running: pacstrap /mnt base base-devel linux linux-firmware..."
