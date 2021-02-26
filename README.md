@@ -1,4 +1,4 @@
-# Archer - WIP
+# Archer - WIP (With the new update is mbr only)
 A complete ArchLinux installer. Making installation easier than eating a pie.
 
 > [EFI Guide](#efi-guide)
