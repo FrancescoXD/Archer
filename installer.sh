@@ -36,6 +36,9 @@ mkswap $(printf "%s2" "$disk")
 mount $(printf "%s3" "$disk") /mnt
 swapon $(printf "%s2" "$disk")
 
+mkdir /mnt/efi
+mount $(printf "%s1" "$disk") /mnt/efi
+
 # Installing
 pacstrap /mnt base base-devel linux linux-firmware
 genfstab -U /mnt > /mnt/etc/fstab
@@ -49,8 +52,6 @@ echo "KEYMAP=it" > /mnt/etc/vconsole.conf
 echo "arch" > /mnt/etc/hostname
 arch-chroot /mnt pacman --noconfirm -S grub efibootmgr networkmanager
 arch-chroot /mnt systemctl enable NetworkManager
-mkdir /mnt/efi
-mount $(printf "%s1" "$disk") /mnt/efi
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
