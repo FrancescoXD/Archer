@@ -24,7 +24,7 @@ read disk
 
 # Partitioning
 parted -s $disk mklabel gpt
-parted -s $disk mkpart primary ESP fat32 0 512MiB
+parted -s $disk mkpart primary fat32 0 512MiB
 parted -s $disk set 1 esp on
 parted -s $disk mkpart primary linux-swap 512MiB 2560MiB
 parted -s $disk mkpart primary ext4 2560MiB 100%
