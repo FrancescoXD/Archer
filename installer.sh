@@ -24,7 +24,8 @@ read disk
 
 # Partitioning
 parted -s $disk mklabel gpt
-parted -s $disk mkpart primary fat32 0 512MiB
+parted -s $disk mkpart primary ESP fat32 0 512MiB
+parted -s $disk set 1 esp on
 parted -s $disk mkpart primary linux-swap 512MiB 2560MiB
 parted -s $disk mkpart primary ext4 2560MiB 100%
 
@@ -43,15 +44,15 @@ arch-chroot /mnt hwclock --systohc
 arch-chroot /mnt sed -i 's/\#it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/g' /etc/locale.gen
 arch-chroot /mnt sed -i 's/\#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
 arch-chroot /mnt locale-gen
-arch-chroot /mnt echo "LANG=it_IT.UTF-8" > /etc/locale.conf
-arch-chroot /mnt echo "KEYMAP=it" > /etc/vconsole.conf
-arch-chroot /mnt echo "arch" > /etc/hostname
+echo "LANG=it_IT.UTF-8" > /mnt/etc/locale.conf
+echo "KEYMAP=it" > /mnt/etc/vconsole.conf
+echo "arch" > /mnt/etc/hostname
 arch-chroot /mnt pacman --noconfirm -S grub efibootmgr networkmanager
 arch-chroot /mnt systemctl enable NetworkManager
-arch-chroot /mnt mkdir /boot/efi
-arch-chroot /mnt mount $(printf "%s1" "$disk") /boot/efi
-arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
-arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+mkdir /mnt/efi
+mount $(printf "%s1" "$disk") /mnt/efi
+grub-install --target=x86_64-efi --efi-directory=/mnt/efi --bootloader-id=GRUB
+grub-mkconfig -o /mnt/boot/grub/grub.cfg
 
 # Finish
 echo "Set root password"
