@@ -51,8 +51,8 @@ arch-chroot /mnt pacman --noconfirm -S grub efibootmgr networkmanager
 arch-chroot /mnt systemctl enable NetworkManager
 mkdir /mnt/efi
 mount $(printf "%s1" "$disk") /mnt/efi
-grub-install --target=x86_64-efi --efi-directory=/mnt/efi --bootloader-id=GRUB
-grub-mkconfig -o /mnt/boot/grub/grub.cfg
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 # Finish
 echo "Set root password"
