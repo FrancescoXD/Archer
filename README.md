@@ -7,8 +7,7 @@ A complete ArchLinux installer. Making installation easier than eating a pie.
 ### Requirements
 An ArchLinux live and a keyboard.
 ```
-# pacman -Sy
-# pacman -S git
+# pacman -Sy git
 ```
 If you get GLIBC error you need to reinstall the ```glibc``` package.
 ```
