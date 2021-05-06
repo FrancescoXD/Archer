@@ -19,7 +19,9 @@ timedatectl set-ntp true
 
 # Disk to use
 fdisk -l
+echo ""
 echo "Select the disk to use: "
+echo -n "=> "
 read disk
 
 # Partitioning
