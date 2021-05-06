@@ -1,6 +1,8 @@
 # Archer - WIP (With the new update is UEFI only)
 A complete ArchLinux installer. Making installation easier than eating a pie.
 
+### The program will format the entire disk, make sure you have backups.
+
 > [EFI Guide](#efi-guide)
 
 > [MBR Guide](#mbr-guide)
@@ -17,8 +19,11 @@ If you get GLIBC error you need to reinstall the ```glibc``` package.
 ```
 $ git clone https://github.com/FrancescoXD/Archer.git
 $ cd Archer
-# chmod 777 installer.sh
+# chmod +x installer.sh
 $ ./installer.sh
 ```
 ## Guide
-### The guide is currently unavailable.
+### EFI guide
+When you start the script a list of disks will come up, you have to write on which disk ArchLinux will be installed (be careful because it wants the full path: ```/dev/sdX```, where *X* must be replaced by the letter of the disk).
+
+When finished, you will be asked for your **_root_** password. _Be careful when choosing this password._
