@@ -1,4 +1,6 @@
 # Archer - WIP (With the new update is UEFI only)
+[![CodeFactor](https://www.codefactor.io/repository/github/francescoxd/archer/badge)](https://www.codefactor.io/repository/github/francescoxd/archer)
+
 A complete ArchLinux installer. Making installation easier than eating a pie.
 
 ### The program will format the entire disk, make sure you have backups.
