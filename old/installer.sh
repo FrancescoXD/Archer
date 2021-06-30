@@ -16,7 +16,7 @@ echo ""
 fdisk -l
 echo ""
 echo "First of all, what is your partition table? (gpt or mbr)"
-read partitionTable
+read -r partitionTable
 
 # Starting
 if [ $partitionTable == mbr ]; then
@@ -25,7 +25,7 @@ if [ $partitionTable == mbr ]; then
 	fdisk -l
 	echo ""
 	echo "Insert your disk: (like sda / sdb / sdc)"
-	read disk
+	read -r disk
 	clear
 	echo "Now, you have to partition the disk, follow the guide on github for MBR partitioning."
 	echo "You need 2 partition, one for filesystem and one for swap."
@@ -35,13 +35,13 @@ if [ $partitionTable == mbr ]; then
 	fdisk -l
 	echo ""
 	echo "Insert the number of the filesystem partition: (like 1 / 2 / 3 - only number!)"
-	read filesystemPart
+	read -r filesystemPart
 	mkfs.ext4 /dev/$disk$filesystemPart
 	clear
 	fdisk -l
 	echo ""
 	echo "Insert the number of the swap partition: (like 1 / 2 / 3 - only number!)"
-	read swapNum
+	read -r swapNum
 	mkswap /dev/$disk$swapNum
 	swapon /dev/$disk$swapNum
 	clear
@@ -60,25 +60,25 @@ if [ $partitionTable == mbr ]; then
 	ls /usr/share/zoneinfo/$localZone/
 	echo ""
 	echo "Insert the zone:"
-	read localTimeZone
+	read -r localTimeZone
 	clear
 	# Locale gen
 	echo "Now you have to see the file /etc/locale.gen and select the right language for you. After selected type CTRL + X and write the full code, like: en_US.UTF-8"
 	nano /etc/locale.gen
 	echo "Now, write your language:"
-	read localeGenLang
+	read -r localeGenLang
 	sed -i -e "s/#$localeGenLang/$localGenLang/g" /etc/locale.gen
 	locale-gen
 	# Locale conf
 	echo "LANG=$localeGenLang" > /etc/locale.conf
 	# Keymap -> vconsole.conf
 	echo "Insert the keymap (exmaple: us)"
-	read keymap
+	read -r keymap
 	echo "KEYMAP=$keymap" > /etc/vconsole.conf
 	# Hostname
 	clear
 	echo "Now, insert the hostname of the machine (recommended -> archlinux)"
-	read hostname
+	read -r hostname
 	echo "$hostname" > /etc/hostname
 	# Chroot
 	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub && systemctl enable NetworkManager'
@@ -101,7 +101,7 @@ elif [ $partitionTable == gpt ]; then
 	echo "Now you have to partition the disk, see my guide for GPT partitioning."
 	echo "You need a partition for EFI (if you are installing archlinux in dualboot with Windows, the efi partition exists), the swap partition and the filesystem partition."
 	echo "Insert your disk: (like sda / sdb / sdc)"
-	read disk
+	read -r disk
 	cfdisk /dev/$disk
 	fdisk -l
 	echo ""
@@ -112,11 +112,11 @@ elif [ $partitionTable == gpt ]; then
 	fdisk -l
 	echo ""
 	echo "Insert the number of the swap partition: (like 1 / 2 / 3 - only number!)"
-	read swapNum
+	read -r swapNum
 	mkswap /dev/$disk$swapNum
 	swapon /dev/$disk$swapNum
 	echo "Insert the EFI partition: (like 1 / 2 / 3 - only number!)"
-	read efiPart
+	read -r efiPart
 	# Mount the system
 	mount /dev/$disk$filesystemPart /mnt
 	mkdir /mnt/boot/efi
@@ -129,30 +129,30 @@ elif [ $partitionTable == gpt ]; then
 	ls /usr/share/zoneinfo/
 	echo ""
 	echo "Insert the localization:"
-	read localZone
+	read -r localZone
 	clear
 	ls /usr/share/zoneinfo/$localZone/
 	echo ""
 	echo "Insert the zone:"
-	read localTimeZone
+	read -r localTimeZone
 	clear
 	# Locale gen
 	echo "Now you have to see the file /etc/locale.gen and select the right language for you. After selected type CTRL + X and write the full code, like: en_US.UTF-8"
 	nano /etc/locale.gen
 	echo "Now, write your language:"
-	read localeGenLang
+	read -r localeGenLang
 	sed -i -e "s/#$localeGenLang/$localGenLang/g" /etc/locale.gen 
 	locale-gen
 	# Keymap -> vconsole.conf
 	echo "Insert the keymap (exmaple: us)"
-	read keymap
+	read -r keymap
 	echo "KEYMAP=$keymap" > /etc/vconsole.conf
 	# Locale conf
 	echo "LANG=$localeGenLang" > /etc/locale.conf
 	# Hostname
 	clear
 	echo "Now, insert the hostname of the machine (recommended -> archlinux)"
-	read hostname
+	read -r hostname
 	echo "$hostname" > /etc/hostname
 	# Chroot
 	arch-chroot /mnt bash -c 'ln -sf /usr/share/zoneinfo/$localZone/$localTimeZone /etc/localtime && hwclock --systohc && pacman -S networkmanager grub efibootmgr && systemctl enable NetworkManager'
