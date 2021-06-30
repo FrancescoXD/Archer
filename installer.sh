@@ -22,7 +22,7 @@ fdisk -l
 echo ""
 echo "Select the disk to use: "
 echo -n "=> "
-read disk
+read -r disk
 
 # Partitioning
 parted -s $disk mklabel gpt
